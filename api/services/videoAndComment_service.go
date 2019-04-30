@@ -8,7 +8,7 @@ import (
 	"log"
 	"io/ioutil"
 	"Streaming-Media-Service/api/dbops"
-	_ "Streaming-Media-Service/api/utils"
+	"Streaming-Media-Service/api/utils"
 )
 
 func AddNewVideo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
@@ -77,7 +77,8 @@ func DeleteVideo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		return
 	}
 
-	// go utils.SendDeleteVideoRequest(vid)
+	go utils.SendDeleteVideoRequest(vid) //删除本地文件，交由scheduler服务完成，单独测试本api应先注释掉
+
 	sendNormalResponse(w, "", 204)
 }
 

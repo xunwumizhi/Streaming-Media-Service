@@ -2,7 +2,7 @@ package taskrunner
 
 import (
 	"os"
-	"video_server/scheduler/dbops"
+	"Streaming-Media-Service/scheduler/dbops"
 	"errors"
 	"sync"
 	"log"

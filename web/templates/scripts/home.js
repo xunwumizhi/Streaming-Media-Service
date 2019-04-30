@@ -30,7 +30,9 @@ $(document).ready(function() {
 		});
 
 		$(".del-video-button").click(function() {
+			//console.log(this.id);
 			var id = this.id.substring(4);
+
   			deleteVideo(id, function(res, err) {
   				if (err !== null) {
   					//window.alert("encounter an error when try to delete video: " + id);
@@ -90,7 +92,7 @@ $(document).ready(function() {
     			popupErrorMsg('encounter an error, pls check your username or pwd');
     			return;
     		}
-
+    		 console.log(res)
     		var obj = JSON.parse(res);
     		setCookie("session", obj["session_id"], DEFAULT_COOKIE_EXPIRE_TIME);
     		setCookie("username", uname, DEFAULT_COOKIE_EXPIRE_TIME);

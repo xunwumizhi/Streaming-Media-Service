@@ -42,6 +42,8 @@ mysql环境5.0版本，排序用`ORDER`！！！！！！！
 
 
 
+io,write,response, 都在哪里进行显示了
+
 
 
 # Streaming-Media-Service
@@ -184,13 +186,13 @@ videoAndComments_service.go 中DeleteVideo并发处理go utils.SendDeleteVideoRe
 
 # 独立服务：`streamserver/`
 
-|功能描述：流控，视频上传
+|功能描述：流控，视频上传，显示视频
 
 
 
 ## 测试
 
-- 当前目录`go build`，运行程序，于是`./video`在程序目录下
+- 当前目录下`go build`，运行程序，于是`./video`在此目录下
 
 
 
@@ -198,7 +200,9 @@ videoAndComments_service.go 中DeleteVideo并发处理go utils.SendDeleteVideoRe
 
 因此先测试上传功能，上传一段长时间视频，再测试流控功能
 
-视频大小超过限制，会卡死，不知道怎么测试
+
+
+视频大小超过限制，会卡死，在总服务测试中进行测试
 
 
 
@@ -206,3 +210,80 @@ videoAndComments_service.go 中DeleteVideo并发处理go utils.SendDeleteVideoRe
 
 # 独立服务：`scheduler/`
 
+并发，定时任务，延迟删除本地视频
+
+main->handlers->taskrunner（删除本地）->dbops操作数据库记录（操作表video_del_rec）
+
+
+
+
+
+## 测试
+
+当前目录`./videos`中新建文件`1` ， `12` ，  `123`
+
+`Restlet Client`  : Get   `http://127.0.0.1:9001/video-delete-record/123`
+
+
+
+# 前端服务：`web`
+
+模板引擎：将html解析和元素预置替换生成最终页面
+
+go的模板有【text/template】和【html/template】，动态生成
+
+`client.go` 转发
+
+
+
+## 测试
+
+同上，`go build`在无痕模式下（没有cookie信息）输入主页面`127.0.0.1:8080`，正常情况会进入home.html页面，如果有cookie会直接跳转到userhome.html无法验证web单元
+
+
+
+
+
+
+
+
+
+## 全部服务总测试
+
+- 遗留问题，将`api/`中service删除视频函数`DeleteVideo`中`	go utils.SendDeleteVideoRequest(vid)`语句打开
+
+  
+
+1. Windows： 在GitBash中`./winGitBash_buildprod.sh`， 在`./bin`下新建`videos`文件夹，并将`./web/templates`页面复制过来；Linux按需修改buildprod.sh，deploy.sh，并依次执行
+
+2. `127.0.0.1:8080`依次测试注册、登录、上传视频、评论、切换视频、删除视频（数据库记录，本地文件）
+
+
+
+
+
+
+
+# 遗留问题
+
+## 删除本地
+
+
+
+- 单条评论没有删除功能；某一视频被删除理论上评论会被全部删除；
+
+
+
+
+
+
+
+## 上云端
+
+改造：7-3，streamserver/handler.go;    ossops.go
+
+7-4 公共配置
+
+7-7 session容错
+
+7-9 scheduler改造

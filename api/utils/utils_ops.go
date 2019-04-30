@@ -4,10 +4,12 @@ import (
 	"crypto/rand"
 	"fmt"
 	"io"
-	"time"
-	"strconv"
-	// "net/http"
-	// "log"
+
+	// "time"
+	// "strconv"
+	
+	"net/http"
+	"log"
 )
 
 func NewUUID() (string, error) {
@@ -24,16 +26,20 @@ func NewUUID() (string, error) {
 }
 
 
-func GetCurrentTimestampSec() int {
-	ts, _:=strconv.Atoi(strconv.FormatInt(time.Now().UnixNano()/1000000000, 10))
-	return ts
-}
-
-// func SendDeleteVideoRequest(id string) {
-// 	addr := config.GetLbAddr() + ":9001"
-// 	url := "http://" + addr + "/video-delete-record/" + id
-// 	_, err := http.Get(url)
-// 	if err != nil {
-// 		log.Printf("Sending deleting video request error: %s", err)
-// 	}
+//修改了视频和评论的list函数，不需要传入时间参数
+// func GetCurrentTimestampSec() int {
+// 	ts, _:=strconv.Atoi(strconv.FormatInt(time.Now().UnixNano()/1000000000, 10))
+// 	return ts
 // }
+
+//此部分配合scheduler服务使用，
+func SendDeleteVideoRequest(id string) {
+	// addr := config.GetLbAddr() + ":9001" //上云测试
+	addr := "127.0.0.1:9001"
+
+	url := "http://" + addr + "/video-delete-record/" + id
+	_, err := http.Get(url)
+	if err != nil {
+		log.Printf("Sending deleting video request error: %s", err)
+	}
+}

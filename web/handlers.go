@@ -10,7 +10,7 @@ import (
     "io/ioutil"
     "net/url"
     "net/http/httputil"
-    "fmt"
+    _ "fmt"
 )
 
 type HomePage struct {
@@ -26,7 +26,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
     sid, err2 := r.Cookie("session")
 
     if err1 != nil || err2 != nil {
-        p := &HomePage{Name: "avenssi"}
+        p := &HomePage{Name: "gxyu"}
         t, e := template.ParseFiles("./templates/home.html")
         if e != nil {
             log.Printf("Parsing template home.html error: %s", e)
@@ -81,12 +81,8 @@ func apiHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
         io.WriteString(w, string(re))
         return
     }
-    err := request(apibody, w, r)
-    if err != nil {
-        io.WriteString(w, fmt.Sprint(err))
-    } else {
-        io.WriteString(w, "ok")
-    }
+    request(apibody, w, r)  //见client.go
+    
     defer r.Body.Close()
 }
 

@@ -29,3 +29,7 @@ CREATE TABLE sessions (
   TTL TINYTEXT,
   login_name VARCHAR(255)
 );
+
+CREATE TABLE video_del_rec (
+    video_id varchar(64) not null primary key
+);
