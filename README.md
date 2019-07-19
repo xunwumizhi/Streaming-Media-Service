@@ -266,7 +266,7 @@ go的模板有【text/template】和【html/template】，动态生成
 
 # 遗留问题
 
-## 删除本地
+## 删除评论
 
 
 
